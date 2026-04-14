@@ -7,12 +7,20 @@
 #   - 'total': tiempo acumulado de todas las vueltas (float)
 
 
+from os import times
+
+
 def init(max_laps):
     """
     Crea y retorna un diccionario para almacenar hasta max_laps vueltas.
     """
+    return {
+        'max': max_laps,
+        'times': [],
+        'total': 0.0
+    }
+
     # TODO: Implementar
-    pass
 
 
 def add_lap(timer, time):
@@ -20,49 +28,63 @@ def add_lap(timer, time):
     Agrega una nueva vuelta con el tiempo especificado.
     Retorna el diccionario modificado.
     """
+    timer['times'].append(time)
+    timer['total'] += time
+    return timer
+
     # TODO: Implementar
-    pass
-
-
+    
 def count(timer):
     """
     Retorna el numero de vueltas agregadas.
     """
+    return len(timer['times'])
     # TODO: Implementar
-    pass
+
 
 
 def cumulative_time(timer):
     """
     Retorna el tiempo acumulado de todas las vueltas.
     """
+    return timer['total']
     # TODO: Implementar
-    pass
-
+    
 
 def format_laps(timer):
     """
     Retorna una representacion en cadena de los tiempos.
     Formato: [t1, t2, t3, ..., tn]
     """
+    return str(timer['times'])
+                    
     # TODO: Implementar
-    pass
-
 
 def fastest_lap(timer):
     """
     Retorna el tiempo mas rapido de cualquier vuelta.
     """
+    return min(timer['times'])
+   
     # TODO: Implementar
-    pass
+    
 
 
 def fastest_multi_lap(timer, k):
     """
     Retorna el tiempo acumulado mas rapido de cualquier k vueltas consecutivas.
     """
+    times= timer['times']
+    current_sum = sum(times[:k])
+    min_sum = current_sum
+
+    for i in range(k, len(times)):
+        current_sum = current_sum - times[i - k] + times[i]
+        if current_sum < min_sum:
+            min_sum = current_sum
+    return min_sum
     # TODO: Implementar
-    pass
+    
 
 
 def longest_decreasing_streak(timer):
@@ -70,6 +92,19 @@ def longest_decreasing_streak(timer):
     Retorna la longitud maxima de una secuencia de vueltas consecutivas
     donde los tiempos disminuyen estrictamente.
     """
+    times = timer['times']
+    max_streak=1
+    current_streak=1
+
+    for i in range(1,len(times)):
+       if times[i]< times[i-1]:
+           current_streak+=1
+           if current_streak > max_streak:
+               max_streak=current_streak
+           else:
+               current_streak=1
+    return max_streak
+               
     # TODO: Implementar
     pass
 
